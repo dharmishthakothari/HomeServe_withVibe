@@ -1,0 +1,153 @@
+{
+  "info": {
+    "name": "HomeServe Horizon API - Full Postman Collection",
+    "description": "Complete API test collection for HomeServe SaaS Platform covering all 10 modules.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Login - Super Admin",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@homeserve.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": "http://127.0.0.1:8000/api/auth/login"
+          }
+        },
+        {
+          "name": "Login - Customer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"customer@homeserve.com\",\n  \"password\": \"cust123\"\n}"
+            },
+            "url": "http://127.0.0.1:8000/api/auth/login"
+          }
+        },
+        {
+          "name": "Get Current User Profile (/me)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "http://127.0.0.1:8000/api/auth/me"
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Services & Categories",
+      "item": [
+        {
+          "name": "List All Categories",
+          "request": {
+            "method": "GET",
+            "url": "http://127.0.0.1:8000/api/services/categories"
+          }
+        },
+        {
+          "name": "List & Search Services",
+          "request": {
+            "method": "GET",
+            "url": "http://127.0.0.1:8000/api/services?search=AC"
+          }
+        },
+        {
+          "name": "Validate Promo Coupon",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"WELCOME100\",\n  \"order_amount\": 799.0\n}"
+            },
+            "url": "http://127.0.0.1:8000/api/services/coupons/validate"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Bookings & Appointments",
+      "item": [
+        {
+          "name": "Create Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{customer_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"provider_id\": 1,\n  \"service_id\": 1,\n  \"address_id\": 1,\n  \"booking_date\": \"2026-11-20\",\n  \"time_slot\": \"10:00 AM - 12:00 PM\",\n  \"special_instructions\": \"Postman automated test booking\",\n  \"coupon_code\": \"WELCOME100\"\n}"
+            },
+            "url": "http://127.0.0.1:8000/api/bookings"
+          }
+        },
+        {
+          "name": "Get Booking Telemetry & Detail",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{customer_token}}" }],
+            "url": "http://127.0.0.1:8000/api/bookings/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Payments & Invoices",
+      "item": [
+        {
+          "name": "Verify Razorpay Test Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{customer_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"booking_id\": 1,\n  \"gateway_payment_id\": \"pay_test_postman_001\"\n}"
+            },
+            "url": "http://127.0.0.1:8000/api/payments/verify"
+          }
+        },
+        {
+          "name": "Printable Invoice HTML",
+          "request": {
+            "method": "GET",
+            "url": "http://127.0.0.1:8000/api/invoices/INV-2026-0001/html"
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Analytics & Governance",
+      "item": [
+        {
+          "name": "Super Admin KPIs & Revenue",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }],
+            "url": "http://127.0.0.1:8000/api/analytics/admin"
+          }
+        },
+        {
+          "name": "Export Full CSV Report",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{admin_token}}" }],
+            "url": "http://127.0.0.1:8000/api/analytics/export/csv"
+          }
+        }
+      ]
+    }
+  ]
+}

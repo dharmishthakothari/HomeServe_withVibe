@@ -121,3 +121,4 @@ def resolve_complaint(complaint_id: int, res_in: ComplaintResolve, current_user:
     ))
     db.commit()
     return {"message": f"Complaint {complaint_id} status updated to {res_in.status.value}"}
+

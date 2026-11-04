@@ -163,3 +163,4 @@ def export_csv_report(current_user: User = Depends(require_role(UserRole.ADMIN))
         media_type="text/csv",
         headers={"Content-Disposition": f"attachment; filename=homeserve_report_{datetime.utcnow().strftime('%Y%m%d')}.csv"}
     )
+

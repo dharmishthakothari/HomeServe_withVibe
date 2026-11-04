@@ -88,3 +88,4 @@ def get_customer_bookings(current_user: User = Depends(require_role(UserRole.CUS
             "invoice_number": b.invoice.invoice_number if b.invoice else None
         })
     return results
+

@@ -42,3 +42,4 @@
 ### 5. Automated Security Test Results
 - **Pytest Security Suite**: 9 passing tests covering unauthorized API rejection (`403 Forbidden`), credential rejection (`401 Unauthorized`), and double-booking rejection (`409 Conflict`).
 - **Audit Verdict**: PASSED. Ready for staging & production deployment.
+

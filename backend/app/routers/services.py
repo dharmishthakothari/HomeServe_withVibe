@@ -148,3 +148,4 @@ def get_active_coupons(db: Session = Depends(get_db)):
         "min_order_value": c.min_order_value,
         "max_discount": c.max_discount
     } for c in coupons]
+

@@ -391,3 +391,4 @@ class ProviderEarning(Base):
     
     provider = relationship("ServiceProvider", back_populates="earnings")
     booking = relationship("Booking", back_populates="earning")
+

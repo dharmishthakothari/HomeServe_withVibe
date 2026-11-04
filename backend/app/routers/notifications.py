@@ -36,3 +36,4 @@ def mark_one_read(notification_id: int, current_user: User = Depends(get_current
         note.is_read = True
         db.commit()
     return {"message": "Notification marked as read."}
+

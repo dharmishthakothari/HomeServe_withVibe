@@ -161,3 +161,4 @@ def test_admin_analytics_access():
     assert "kpis" in data
     assert data["kpis"]["total_customers"] >= 2
     assert data["kpis"]["total_providers"] >= 3
+

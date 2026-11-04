@@ -149,3 +149,4 @@ def update_job_status(booking_id: int, status_update: TechnicianStatusUpdate, cu
         "assignment_status": assignment.status,
         "booking_status": booking.status.value
     }
+

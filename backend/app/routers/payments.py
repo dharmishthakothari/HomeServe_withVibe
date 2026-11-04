@@ -326,3 +326,4 @@ def get_invoice_html(invoice_number: str, db: Session = Depends(get_db)):
     </html>
     """
     return HTMLResponse(content=html_content)
+

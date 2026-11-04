@@ -353,3 +353,4 @@ def upload_booking_image(booking_id: int, image_type: str, image_url: str, notes
     db.commit()
     db.refresh(img)
     return {"message": "Image saved successfully", "image_id": img.id}
+

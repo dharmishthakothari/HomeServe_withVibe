@@ -76,3 +76,4 @@
 - [x] Test `GET /api/health` returns `{"status": "healthy", "database": "mysql"}`
 - [x] Test Swagger API interactive documentation at `https://your-backend.onrender.com/docs`
 - [x] Test demo login with persona switcher on live frontend URL.
+

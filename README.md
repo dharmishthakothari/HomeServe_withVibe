@@ -2,6 +2,10 @@
 > **Vibe Coding Capstone Project • 100 Marks SDLC Production-Ready Submission**  
 > Connects Customers, Certified Service Providers, Field Technicians, and Super Administrators in a responsive, multi-role SaaS ecosystem.
 
+### 🌐 Live Production Deployment
+- **Live Netlify Web App**: [https://homeserve-horizon-vibe.netlify.app](https://homeserve-horizon-vibe.netlify.app)
+- **GitHub Repository**: [https://github.com/dharmishthakothari/HomeServe_withVibe.git](https://github.com/dharmishthakothari/HomeServe_withVibe.git)
+
 ---
 
 ## 🌟 Technology Snapshot

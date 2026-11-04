@@ -39,15 +39,33 @@ export default function App() {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
-  // Auto-login default demo customer on first visit if not logged in
-  useEffect(() => {
-    if (!currentUser) {
-      handleRoleSwitch('customer@homeserve.com', 'cust123');
-    }
-  }, []);
+  // ─── Full session reset ─────────────────────────────────────────────────────
+  // Clears ALL React state + localStorage so no stale data remains after logout
+  // or before switching to a different user (single-session enforcement).
+  const resetAppState = () => {
+    // 1. Wipe storage
+    removeToken();
+    localStorage.removeItem('homeserve_user');
+    // 2. Reset every piece of state
+    setCurrentUserState(null);
+    setCurrentView('explore');
+    setCategories([]);
+    setServices([]);
+    setSearchQuery('');
+    setSelectedCategory(null);
+    setSelectedServiceToBook(null);
+    setPendingPaymentBooking(null);
+    setActiveTrackerBookingId(null);
+    setIsAuthModalOpen(false);
+    setIsNotificationOpen(false);
+    setNotifications([]);
+    setUnreadCount(0);
+    setLoadingServices(false);
+  };
 
   // Fetch Categories & Services
   useEffect(() => {
+    // On first mount, always load public catalogue (no login required)
     serviceApi.getCategories()
       .then(res => setCategories(res))
       .catch(console.error);
@@ -83,7 +101,16 @@ export default function App() {
   }, [currentUser]);
 
   // Handle instant role switch from the top bar
+  // Enforces single-session: fully resets previous user's state FIRST,
+  // waits a tick for state to settle, then logs in as the new user.
   const handleRoleSwitch = async (email, password) => {
+    // Step 1 — wipe every trace of the previous session
+    resetAppState();
+
+    // Step 2 — micro-delay so React flushes state updates before login
+    await new Promise(r => setTimeout(r, 60));
+
+    // Step 3 — authenticate as the requested persona
     try {
       const res = await authApi.login(email, password);
       setToken(res.access_token);
@@ -96,17 +123,29 @@ export default function App() {
       else if (res.role === 'TECHNICIAN') setCurrentView('technician-dashboard');
       else setCurrentView('explore');
 
+      // Reload services & categories for the fresh session
+      serviceApi.getCategories()
+        .then(res => setCategories(res))
+        .catch(() => {});
+      setLoadingServices(true);
+      serviceApi.getServices({})
+        .then(res => setServices(res))
+        .catch(() => {})
+        .finally(() => setLoadingServices(false));
+
       fetchNotifications();
     } catch (err) {
       console.error('Role switch error:', err);
     }
   };
 
+  // Full logout — clears ALL session state, returns to explore page (no auto re-login)
   const handleLogout = () => {
-    removeToken();
-    localStorage.removeItem('homeserve_user');
-    setCurrentUserState(null);
-    setCurrentView('explore');
+    resetAppState();
+    // Re-fetch public services so the explore page isn't blank
+    serviceApi.getCategories().then(setCategories).catch(() => {});
+    setLoadingServices(true);
+    serviceApi.getServices({}).then(setServices).catch(() => {}).finally(() => setLoadingServices(false));
   };
 
   // Booking Flow: Step 1 -> Booking created -> Razorpay Modal
